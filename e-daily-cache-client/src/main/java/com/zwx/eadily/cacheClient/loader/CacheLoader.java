@@ -21,6 +21,12 @@ import java.util.function.Function;
 public interface CacheLoader<K,V> extends Function<K,V> {
     V load(K key) throws Throwable;
 
+    /**
+     * 加载集合所有key
+     * @param keys
+     * @return
+     * @throws Throwable
+     */
     default Map<K, V> loadAll(Set<K> keys) throws Throwable {
         Map<K, V> map = new HashMap();
         Iterator var3 = keys.iterator();
@@ -32,12 +38,15 @@ public interface CacheLoader<K,V> extends Function<K,V> {
                 map.put(k, value);
             }
         }
-
         return map;
     }
 
+    /**
+     * 加载单个key
+     * @param key
+     * @return
+     */
     default V apply(K key) {
-
         try {
             return this.load(key);
         } catch (Throwable throwable) {
